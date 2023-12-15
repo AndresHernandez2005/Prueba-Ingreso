@@ -1,13 +1,18 @@
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
-
+import { ThemeProvider } from '@emotion/react';
+import { SincoTheme } from '@sinco/react';
+import '@fontsource/nunito';
+import '@fontsource/roboto';
 import App from './app/app';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <StrictMode>
-    <App />
-  </StrictMode>
+  <ThemeProvider theme={SincoTheme}>
+    <StrictMode>
+      <App />
+    </StrictMode>
+  </ThemeProvider>
 );
