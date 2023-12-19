@@ -2,9 +2,8 @@ import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { ThemeProvider } from '@emotion/react';
 import { SincoTheme } from '@sinco/react';
-import '@fontsource/nunito';
-import '@fontsource/roboto';
-import App from './app/app';
+import App from './app';
+import { CssBaseline } from '@mui/material';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -12,6 +11,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <ThemeProvider theme={SincoTheme}>
     <StrictMode>
+      <CssBaseline />
       <App />
     </StrictMode>
   </ThemeProvider>
