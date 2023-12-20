@@ -1,0 +1,68 @@
+{
+  "Carros": {
+    "nuevos": [
+      {
+        "tipo": "carro",
+        "modelo": "Renault",
+        "color": "Blanco",
+        "kilometraje": 0,
+        "valor": 35000,
+        "fecha_registro": "2023-01-15"
+      }
+    ],
+    "usados": [
+      {
+        "tipo": "carro",
+        "modelo": "Chevrolet",
+        "color": "Gris",
+        "kilometraje": 8000,
+        "valor": 28000,
+        "fecha_registro": "2023-05-20"
+      },
+      {
+        "tipo": "carro",
+        "modelo": "Mazda",
+        "color": "Azul",
+        "kilometraje": 15000,
+        "valor": 42000,
+        "fecha_registro": "2023-03-10"
+      }
+    ]
+  },
+  "Motos": {
+    "nuevos": [
+      {
+        "tipo": "moto",
+        "modelo": "Yamaha",
+        "color": "Negro",
+        "cilindraje": 450,
+        "numero_velocidades": 5,
+        "kilometraje": 0,
+        "valor": 9000,
+        "fecha_registro": "2023-11-30"
+      },
+      {
+        "tipo": "moto",
+        "modelo": "AKT",
+        "color": "Blanco",
+        "cilindraje": 400,
+        "numero_velocidades": 5,
+        "kilometraje": 0,
+        "valor": 7000,
+        "fecha_registro": "2023-7-21"
+      }
+    ],
+    "usados": [
+      {
+        "tipo": "moto",
+        "modelo": "Kawasaki",
+        "color": "Rojo",
+        "cilindraje": 600,
+        "numero_velocidades": 6,
+        "kilometraje": 18000,
+        "valor": 12000,
+        "fecha_registro": "2023-1-15"
+      }
+    ]
+  }
+}
