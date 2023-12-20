@@ -9,6 +9,7 @@ export interface Moto {
   fecha_registro: string;
   cilindraje: number;
   numero_velocidades: number;
+  tipo: string;
 }
 
 export interface MotosData {
@@ -43,7 +44,7 @@ const useFetchMotos = () => {
             nuevos: [...oldData.nuevos, response.data],
           };
         }
-        return oldData;
+        return { nuevos: [response.data], usados: [] };
       });
       return response.data;
     } catch (error) {
@@ -51,7 +52,46 @@ const useFetchMotos = () => {
     }
   };
 
-  return { motoData, isLoading, error, addMoto };
+  const editMoto = async (motoId: number, updatedMoto: Moto) => {
+    try {
+      const response = await axios.put(`${apiMotosUrl}/${motoId}`, updatedMoto);
+      queryClient.setQueryData<MotosData>(['motokey'], (oldData) => {
+        if (oldData) {
+          const updatedNuevos = oldData.nuevos.map((moto) =>
+            moto.id === motoId ? response.data : moto
+          );
+          const updatedUsados = oldData.usados.map((moto) =>
+            moto.id === motoId ? response.data : moto
+          );
+          return { nuevos: updatedNuevos, usados: updatedUsados };
+        }
+        return { nuevos: [], usados: [] };
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error('No se pudo editar la moto');
+    }
+  };
+  const deleteMoto = async (motoId: number) => {
+    try {
+      await axios.delete(`${apiMotosUrl}/${motoId}`);
+      queryClient.setQueryData<MotosData>(['carrokey'], (oldData) => {
+        if (oldData) {
+          const updatedData = {
+            ...oldData,
+            nuevos: oldData.nuevos.filter((carro) => carro.id !== motoId),
+            usados: oldData.usados.filter((carro) => carro.id !== motoId),
+          };
+          return updatedData;
+        }
+        return oldData;
+      });
+    } catch (error) {
+      throw new Error('No se pudo eliminar el carro');
+    }
+  };
+
+  return { motoData, isLoading, error, addMoto, editMoto, deleteMoto };
 };
 
 export default useFetchMotos;

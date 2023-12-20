@@ -7,6 +7,7 @@ export interface Carro {
   kilometraje: number;
   valor: number;
   fecha_registro: string;
+  tipo: string;
 }
 
 export interface CarrosData {
@@ -36,12 +37,19 @@ const useFetchCarros = () => {
       const response = await axios.post(apiCarrosUrl, newCarro);
       queryClient.setQueryData<CarrosData>(['carrokey'], (oldData) => {
         if (oldData) {
-          return {
+          const isNuevo = newCarro.kilometraje === 0;
+          const updatedData = {
             ...oldData,
-            nuevos: [...oldData.nuevos, response.data],
+            nuevos: isNuevo
+              ? [...oldData.nuevos, response.data]
+              : oldData.nuevos,
+            usados: !isNuevo
+              ? [...oldData.usados, response.data]
+              : oldData.usados,
           };
+          return updatedData;
         }
-        return oldData;
+        return { nuevos: [response.data], usados: [] };
       });
       return response.data;
     } catch (error) {
@@ -49,7 +57,50 @@ const useFetchCarros = () => {
     }
   };
 
-  return { carroData, isLoading, error, addCarro };
+  const editCarro = async (carroId: number, updatedCarro: Carro) => {
+    try {
+      const response = await axios.put(
+        `${apiCarrosUrl}/${carroId}`,
+        updatedCarro
+      );
+      queryClient.setQueryData<CarrosData>(['carrokey'], (oldData) => {
+        if (oldData) {
+          const updatedNuevos = oldData.nuevos.map((carro) =>
+            carro.id === carroId ? response.data : carro
+          );
+          const updatedUsados = oldData.usados.map((carro) =>
+            carro.id === carroId ? response.data : carro
+          );
+          return { nuevos: updatedNuevos, usados: updatedUsados };
+        }
+        return { nuevos: [], usados: [] };
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error('No se pudo editar el carro');
+    }
+  };
+
+  const deleteCarro = async (carroId: number) => {
+    try {
+      await axios.delete(`${apiCarrosUrl}/${carroId}`);
+      queryClient.setQueryData<CarrosData>(['carrokey'], (oldData) => {
+        if (oldData) {
+          const updatedData = {
+            ...oldData,
+            nuevos: oldData.nuevos.filter((carro) => carro.id !== carroId),
+            usados: oldData.usados.filter((carro) => carro.id !== carroId),
+          };
+          return updatedData;
+        }
+        return oldData;
+      });
+    } catch (error) {
+      throw new Error('No se pudo eliminar el carro');
+    }
+  };
+
+  return { carroData, isLoading, error, addCarro, editCarro, deleteCarro };
 };
 
 export default useFetchCarros;

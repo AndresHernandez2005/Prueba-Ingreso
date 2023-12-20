@@ -8,7 +8,7 @@ interface VehicleProps {
     color: string;
     kilometraje: number;
     valor: number;
-    fechaRegistro: string;
+    fecha_registro: string;
     cilindraje: number;
     numVelocidades: number;
   };
@@ -66,8 +66,8 @@ const FormularioVehiculo: React.FC<VehicleProps> = ({
         <TextField
           required
           label="Fecha de Registro"
-          name="fechaRegistro"
-          value={formData.fechaRegistro}
+          name="fecha_registro"
+          value={formData.fecha_registro}
           onChange={handleInputChange}
           fullWidth
         />

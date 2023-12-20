@@ -31,7 +31,7 @@ const DialogRegistro: React.FC<DialogRegistroProps> = ({ open, onClose }) => {
     color: '',
     kilometraje: 0,
     valor: 0,
-    fechaRegistro: '',
+    fecha_registro: '',
     cilindraje: 0,
     numVelocidades: 0,
   });
@@ -60,17 +60,19 @@ const DialogRegistro: React.FC<DialogRegistroProps> = ({ open, onClose }) => {
     try {
       if (vehicleType === 'moto') {
         const newMoto: Moto = {
-          id: 0,
           ...formData,
           fecha_registro: '',
           numero_velocidades: 0,
+          tipo: '',
+          id: 0,
         };
         await addMoto(newMoto);
       } else if (vehicleType === 'carro') {
         const newCarro: Carro = {
-          id: 0,
           ...formData,
           fecha_registro: '',
+          tipo: '',
+          id: 0,
         };
         await addCarro(newCarro);
       }
