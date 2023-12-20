@@ -35,11 +35,33 @@
         "tipo": "moto",
         "modelo": "Yamaha",
         "color": "Negro",
-        "cilindraje": 150,
+        "cilindraje": 450,
         "numero_velocidades": 5,
         "kilometraje": 0,
         "valor": 9000,
-        "fecha_registro": "2022-11-30"
+        "fecha_registro": "2023-11-30"
+      },
+      {
+        "tipo": "moto",
+        "modelo": "AKT",
+        "color": "Blanco",
+        "cilindraje": 400,
+        "numero_velocidades": 5,
+        "kilometraje": 0,
+        "valor": 7000,
+        "fecha_registro": "2023-7-21"
+      }
+    ],
+    "usados": [
+      {
+        "tipo": "moto",
+        "modelo": "Kawasaki",
+        "color": "Rojo",
+        "cilindraje": 600,
+        "numero_velocidades": 6,
+        "kilometraje": 18000,
+        "valor": 12000,
+        "fecha_registro": "2023-1-15"
       }
     ]
   }

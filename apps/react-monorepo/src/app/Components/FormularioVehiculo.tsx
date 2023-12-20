@@ -1,3 +1,4 @@
+import React from 'react';
 import { Grid, TextField } from '@mui/material';
 
 interface VehicleProps {
@@ -5,11 +6,11 @@ interface VehicleProps {
   formData: {
     modelo: string;
     color: string;
-    kilometraje: string;
-    valor: string;
+    kilometraje: number;
+    valor: number;
     fechaRegistro: string;
-    cilindraje: string;
-    numVelocidades: string;
+    cilindraje: number;
+    numVelocidades: number;
   };
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -23,6 +24,7 @@ const FormularioVehiculo: React.FC<VehicleProps> = ({
     <Grid container rowSpacing={0.5}>
       <Grid item xs={6}>
         <TextField
+          required
           label="Modelo"
           name="modelo"
           value={formData.modelo}
@@ -32,6 +34,7 @@ const FormularioVehiculo: React.FC<VehicleProps> = ({
       </Grid>
       <Grid item xs={6}>
         <TextField
+          required
           label="Color"
           name="color"
           value={formData.color}
@@ -41,6 +44,7 @@ const FormularioVehiculo: React.FC<VehicleProps> = ({
       </Grid>
       <Grid item xs={6}>
         <TextField
+          required
           label="Kilometraje"
           name="kilometraje"
           value={formData.kilometraje}
@@ -50,6 +54,7 @@ const FormularioVehiculo: React.FC<VehicleProps> = ({
       </Grid>
       <Grid item xs={6}>
         <TextField
+          required
           label="Valor"
           name="valor"
           value={formData.valor}
@@ -59,6 +64,7 @@ const FormularioVehiculo: React.FC<VehicleProps> = ({
       </Grid>
       <Grid item xs={6}>
         <TextField
+          required
           label="Fecha de Registro"
           name="fechaRegistro"
           value={formData.fechaRegistro}
@@ -66,11 +72,11 @@ const FormularioVehiculo: React.FC<VehicleProps> = ({
           fullWidth
         />
       </Grid>
-
       {tipoVehiculo === 'moto' && (
         <>
           <Grid item xs={6}>
             <TextField
+              required
               label="Cilindraje"
               name="cilindraje"
               value={formData.cilindraje}
@@ -80,6 +86,7 @@ const FormularioVehiculo: React.FC<VehicleProps> = ({
           </Grid>
           <Grid item xs={6}>
             <TextField
+              required
               label="Número de Velocidades"
               name="numVelocidades"
               value={formData.numVelocidades}

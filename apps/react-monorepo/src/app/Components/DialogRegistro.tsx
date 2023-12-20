@@ -13,6 +13,8 @@ import {
   Stack,
 } from '@mui/material';
 import FormularioVehiculo from './FormularioVehiculo';
+import useFetchMotos, { Moto } from '../hooks/useFetchMotos';
+import useFetchCarros, { Carro } from '../hooks/useFetchCarros';
 
 interface DialogRegistroProps {
   open: boolean;
@@ -20,19 +22,24 @@ interface DialogRegistroProps {
 }
 
 const DialogRegistro: React.FC<DialogRegistroProps> = ({ open, onClose }) => {
-  const handleClose = () => {
-    onClose();
-  };
+  const { addMoto } = useFetchMotos();
+  const { addCarro } = useFetchCarros();
+
   const [vehicleType, setVehicleType] = useState('');
   const [formData, setFormData] = useState({
     modelo: '',
     color: '',
-    kilometraje: '',
-    valor: '',
+    kilometraje: 0,
+    valor: 0,
     fechaRegistro: '',
-    cilindraje: '',
-    numVelocidades: '',
+    cilindraje: 0,
+    numVelocidades: 0,
   });
+
+  const handleClose = () => {
+    onClose();
+  };
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleInputChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
@@ -41,14 +48,36 @@ const DialogRegistro: React.FC<DialogRegistroProps> = ({ open, onClose }) => {
       [name]: value,
     });
   };
+
   const handleVehicleTypeChange = (e: {
     target: { value: React.SetStateAction<string> };
   }) => {
     setVehicleType(e.target.value);
   };
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    console.log('Datos enviados:', formData);
+    try {
+      if (vehicleType === 'moto') {
+        const newMoto: Moto = {
+          id: 0,
+          ...formData,
+          fecha_registro: '',
+          numero_velocidades: 0,
+        };
+        await addMoto(newMoto);
+      } else if (vehicleType === 'carro') {
+        const newCarro: Carro = {
+          id: 0,
+          ...formData,
+          fecha_registro: '',
+        };
+        await addCarro(newCarro);
+      }
+      handleClose();
+    } catch (error) {
+      console.error('Error al agregar el vehículo:', error);
+    }
   };
 
   return (
@@ -87,7 +116,7 @@ const DialogRegistro: React.FC<DialogRegistroProps> = ({ open, onClose }) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancelar</Button>
-        <Button onClick={handleClose}>Registrar</Button>
+        <Button onClick={handleSubmit}>Registrar</Button>
       </DialogActions>
     </Dialog>
   );

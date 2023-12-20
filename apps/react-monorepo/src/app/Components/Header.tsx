@@ -25,7 +25,7 @@ const Header = () => {
       <Toolbar>
         <img
           style={{ height: 45, width: 45, marginRight: 2 }}
-          src="/public/logo_transparent.png"
+          src="/logo_transparent.png"
           alt="logo-concesionario"
         />
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>

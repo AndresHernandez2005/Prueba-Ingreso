@@ -3,7 +3,7 @@ import Header from './Header';
 import Navegation from './Navegation';
 import ListaVehiculos from './ListaVehiculos';
 
-const Home = () => {
+export const Home = () => {
   return (
     <>
       <Header />
@@ -16,5 +16,3 @@ const Home = () => {
     </>
   );
 };
-
-export default Home;

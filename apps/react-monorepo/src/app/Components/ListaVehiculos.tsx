@@ -1,7 +1,8 @@
 import React from 'react';
 import { Card, Divider, Stack, Tab, Tabs } from '@mui/material';
-import CarCrashIcon from '@mui/icons-material/CarCrash';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import TwoWheelerIcon from '@mui/icons-material/TwoWheeler';
+import CardVehiculo from './CardVehiculo';
 
 function samePageLinkNavigation(
   event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
@@ -36,10 +37,11 @@ const ListaVehiculos = () => {
     <Card>
       <Stack padding={2}>
         <Tabs value={value} onChange={handleChange}>
-          <Tab label="Carros" href="/drafts" icon={<CarCrashIcon />}></Tab>
-          <Tab label="Motos" href="/trash" icon={<TwoWheelerIcon />} />
+          <Tab label="Carros" href="" icon={<DirectionsCarIcon />}></Tab>
+          <Tab label="Motos" href="" icon={<TwoWheelerIcon />} />
         </Tabs>
         <Divider />
+        <CardVehiculo />
       </Stack>
     </Card>
   );

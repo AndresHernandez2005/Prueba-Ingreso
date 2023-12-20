@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
 import axios from 'axios';
-
-interface Carro {
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+export interface Carro {
   id: number;
   modelo: string;
   color: string;
@@ -10,91 +9,47 @@ interface Carro {
   fecha_registro: string;
 }
 
-interface CarrosData {
+export interface CarrosData {
   nuevos: Carro[];
   usados: Carro[];
 }
 
 const useFetchCarros = () => {
-  const [carrosData, setCarrosData] = useState<CarrosData>({
-    nuevos: [],
-    usados: [],
-  });
-  const [loading, setLoading] = useState(true);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [error, setError] = useState<null | any>(null);
-
   const apiCarrosUrl = 'http://localhost:3000/carros';
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(apiCarrosUrl);
-        const data = response.data;
-        setCarrosData(data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error al obtener datos de carros:', error);
-        setError(error);
-        setLoading(false);
-      }
-    };
+  const queryClient = useQueryClient();
+  const {
+    data: { nuevos = [], usados = [] } = {},
+    isLoading,
+    error,
+  } = useQuery<CarrosData>({
+    queryKey: ['carrokey'],
+    queryFn: async () => {
+      const response = await axios.get(apiCarrosUrl);
+      return response.data;
+    },
+  });
+  const carroData = [...nuevos, ...usados];
 
-    fetchData();
-  }, []);
-
-  const updateCarro = async (
-    tipo: 'nuevos' | 'usados',
-    carroId: number,
-    newData: Partial<Carro>
-  ) => {
+  const addCarro = async (newCarro: Carro) => {
     try {
-      await axios.patch(`${apiCarrosUrl}/${tipo}/${carroId}`, newData);
-
-      setCarrosData((prevData) => ({
-        ...prevData,
-        [tipo]: prevData[tipo].map((carro) =>
-          carroId === carro.id ? { ...carro, ...newData } : carro
-        ),
-      }));
+      const response = await axios.post(apiCarrosUrl, newCarro);
+      queryClient.setQueryData<CarrosData>(['carrokey'], (oldData) => {
+        if (oldData) {
+          return {
+            ...oldData,
+            nuevos: [...oldData.nuevos, response.data],
+          };
+        }
+        return oldData;
+      });
+      return response.data;
     } catch (error) {
-      console.error('Error al actualizar el carro:', error);
+      throw new Error('No se pudo agregar el nuevo carro');
     }
   };
 
-  const addCarro = async (
-    tipo: 'nuevos' | 'usados',
-    newCarroData: Omit<Carro, 'fecha_registro'>
-  ) => {
-    try {
-      const response = await axios.post(
-        `${apiCarrosUrl}/${tipo}`,
-        newCarroData
-      );
-
-      setCarrosData((prevData) => ({
-        ...prevData,
-        [tipo]: [...prevData[tipo], response.data],
-      }));
-    } catch (error) {
-      console.error('Error al agregar el carro:', error);
-    }
-  };
-
-  const deleteCarro = async (tipo: 'nuevos' | 'usados', carroId: number) => {
-    try {
-      await axios.delete(`${apiCarrosUrl}/${tipo}/${carroId}`);
-
-      setCarrosData((prevData) => ({
-        ...prevData,
-        [tipo]: prevData[tipo].filter((carro) => carro.id !== carroId),
-      }));
-    } catch (error) {
-      console.error('Error al eliminar el carro:', error);
-    }
-  };
-
-  return { carrosData, loading, error, updateCarro, addCarro, deleteCarro };
+  return { carroData, isLoading, error, addCarro };
 };
 
 export default useFetchCarros;
